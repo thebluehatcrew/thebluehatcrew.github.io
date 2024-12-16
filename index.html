@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicotine Facts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stat-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .fact-section {
+            margin: 4rem 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fact-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .fact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .fact-card h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #1d1d1f;
+            margin-bottom: 1rem;
+        }
+
+        .additional-info {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #f8f8f8;
+            border-radius: 8px;
+            margin-top: 1rem;
+            padding: 0 1rem;
+        }
+
+        .info-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: bold;
+        }
+
+        .sources-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #1d1d1f;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .fact-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-clock {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stat-clock" id="deathCount">
+        Deaths from smoking this year: 0
+    </div>
+
+    <div class="container">
+        <!-- Facts sections will be dynamically inserted here -->
+    </div>
+
+    <button class="info-button">i</button>
+
+    <div class="sources-modal">
+        <h3>Sources:</h3>
+        <ul>
+            <li><a href="https://www.who.int/news-room/fact-sheets/detail/tobacco">World Health Organization</a></li>
+            <li><a href="https://www.cdc.gov/tobacco/data_statistics/">CDC Tobacco Statistics</a></li>
+            <li><a href="tel:+1-800-784-8669">1-800-QUIT-NOW</a></li>
+        </ul>
+    </div>
+
+    <footer class="footer">
+        2nd Period Haelth Final Assignment Thing
+    </footer>
+
+    <script>
+        const facts = [
+            {
+                title: "Deaths from Nicotine-Related Products 💀",
+                content: "Global: 8 million people die from smoking and nicotine related products",
+                additionalInfo: "In the U.S: 480,000 deaths annually (about 1,300 per day). Secondhand Smoke: 1.2 million die each year from exposure."
+            },
+            {
+                title: "Cancer Due to Nicotine 🫁",
+                content: "Smoking causes 30% of all cancer deaths globally. Responsible for 80% of lung cancer deaths worldwide.",
+                additionalInfo: "In the U.S. 85% of lung cancer deaths are linked to smoking."
+            },
+            {
+                title: "Environmental Impact 🌍",
+                content: "4.5 trillion cigarette butts are discarded annually globally (about 10 million per minute).",
+                additionalInfo: "Cigarette butts take 1-5 years to decompose."
+            },
+            {
+                title: "Age of First Use 👥",
+                content: "90% of smokers start before age 18. In the U.S., 2,000 youths start smoking daily.",
+                additionalInfo: "11% of high school students use e-cigarettes, totaling 730,000 new smokers annually."
+            },
+            {
+                title: "Quit Rates 📊",
+                content: "60% of smokers attempt to quit annually, but only 7% succeed long-term.",
+                additionalInfo: "In the U.S., 68% of smokers want to quit, but only 3-5% succeed without professional help."
+            },
+            {
+                title: "Industry Revenue 💰",
+                content: "The tobacco industry generates $700 billion annually globally.",
+                additionalInfo: "U.S: $80 billion spent annually on tobacco products ($1,000 per second)."
+            },
+            {
+                title: "Global Nicotine Addiction 🌐",
+                content: "1.3 billion people are addicted to nicotine worldwide.",
+                additionalInfo: "U.S: 2.5 million high school students and 1 million middle school students vape."
+            },
+            {
+                title: "Cigarette Usage Rate ⏱️",
+                content: "12.5 billion cigarettes are smoked daily globally.",
+                additionalInfo: "That's approximately 145,000 cigarettes per second."
+            },
+            {
+                title: "Life Expectancy Impact ⚠️",
+                content: "Smokers lose an average of 10 years of life expectancy.",
+                additionalInfo: "Heavy smokers (20+ cigarettes daily) lose 10-15 years of life expectancy."
+            },
+            {
+                title: "Youth Vaping Crisis 📱",
+                content: "27% of U.S. high school students use e-cigarettes.",
+                additionalInfo: "30% of vapers transition to traditional smoking."
+            },
+            {
+                title: "Nicotine Content 💊",
+                content: "Cigarettes: 8-20mg nicotine per cigarette. Vapes: 5-60mg per ml of e-liquid.",
+                additionalInfo: "Smokeless Tobacco: 3-4mg of nicotine per gram."
+            },
+            {
+                title: "Nicotine Metabolism ⚕️",
+                content: "Nicotine's half-life is 2 hours in the body.",
+                additionalInfo: "Nicotine is mostly eliminated from the body in 24-72 hours."
+            },
+            {
+                title: "Health Risks 🏥",
+                content: "Over 1,000 cases of nicotine poisoning annually in the U.S.",
+                additionalInfo: "Smokers are 2-4 times more likely to have a stroke. 795,000 strokes occur annually in the U.S."
+            },
+            {
+                title: "Regional Data 🗺️",
+                content: "Europe: 25% of adults smoke. Asia: China consumes 40% of world's tobacco.",
+                additionalInfo: "U.S: 12.5% of adults smoke. Africa: Smoking rates rising, especially in South Africa."
+            },
+            {
+                title: "Additional Statistics 📈",
+                content: "U.S. tobacco industry is worth over $100 billion annually.",
+                additionalInfo: "50% of U.S. teens who vape use e-cigarettes daily, increasing risk of transitioning to other nicotine products."
+            }
+        ];
+
+        const container = document.querySelector('.container');
+
+        // Create and append fact sections
+        facts.forEach(fact => {
+            const section = document.createElement('div');
+            section.className = 'fact-section';
+            section.innerHTML = `
+                <div class="fact-card">
+                    <h2>${fact.title}</h2>
+                    <p>${fact.content}</p>
+                    <div class="additional-info">
+                        <p>${fact.additionalInfo}</p>
+                    </div>
+                </div>
+            `;
+            container.appendChild(section);
+        });
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.fact-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Death counter
+        function updateDeathCount() {
+            const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+            const now = new Date();
+            const secondsThisYear = (now - startOfYear) / 1000;
+            const deaths = Math.floor(secondsThisYear * (10 / 60)); // 10 deaths per minute
+            
+            document.getElementById('deathCount').textContent = 
+                `Deaths from smoking this year: ${deaths.toLocaleString()}`;
+        }
+
+        setInterval(updateDeathCount, 1000);
+        updateDeathCount();
+
+        // Info button functionality
+        const infoButton = document.querySelector('.info-button');
+        const sourcesModal = document.querySelector('.sources-modal');
+
+        infoButton.addEventListener('click', () => {
+            sourcesModal.style.display = 
+                sourcesModal.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Hover functionality for fact cards
+        document.querySelectorAll('.fact-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const info = card.querySelector('.additional-info');
+                info.style.maxHeight = info.scrollHeight + 'px';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                const info = card.querySelector('.additional-info');
+                info.style.maxHeight = '0';
+            });
+        });
+    </script>
+</body>
+</html>
